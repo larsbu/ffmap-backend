@@ -40,6 +40,9 @@ def mark_online(node, now):
 def import_nodeinfo(nodes, nodeinfos, now, assume_online=False):
     for nodeinfo in filter(lambda d: 'node_id' in d, nodeinfos):
         node = nodes.setdefault(nodeinfo['node_id'], {'flags': dict()})
+        if 'location' in nodeinfo:
+            if 'latitude' not in nodeinfo['location'] or 'longitude' not in nodeinfo['location']:
+                del(nodeinfo['location'])
         node['nodeinfo'] = nodeinfo
         node['flags']['online'] = False
         node['flags']['gateway'] = False
